@@ -3,7 +3,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'scrooloose/nerdtree'
 Plug 'fatih/vim-go', { 'tag': '*' }
 Plug 'sickill/vim-monokai'
-Plug 'kien/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tpope/vim-rails'
 Plug 'vim-scripts/vcscommand.vim'
 Plug 'scrooloose/syntastic'
@@ -28,6 +28,8 @@ colorscheme monokai
 set shiftwidth=2
 set expandtab
 let g:airline#extensions#tabline#enabled = 1
+set encoding=utf8
+set guifont=Droid\ Sans\ Mono\ for\ Powerline\ Plus\ Nerd\ File\ Types\ 11
 set nocompatible
 set hidden
 
