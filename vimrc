@@ -13,6 +13,13 @@ Plug 'tpope/vim-surround'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-ctrlspace/vim-ctrlspace'
+Plug 'elixir-lang/vim-elixir'
+Plug 'slashmili/alchemist.vim'
+Plug 'janko-m/vim-test'
+Plug 'ngmy/vim-rubocop'
+Plug 'noprompt/vim-yardoc'
+Plug 'vim-ruby/vim-ruby'
+Plug 'leafgarland/typescript-vim'
 "
 " " Add plugins to &runtimepath
 call plug#end()
