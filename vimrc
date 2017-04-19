@@ -37,6 +37,7 @@ Plug 'SirVer/ultisnips'
 " Snippets are separated from the engine. Add this if you want them:
 Plug 'honza/vim-snippets'
 Plug 'thoughtbot/vim-rspec'
+Plug 'nathanaelkane/vim-indent-guides'
 
 "Zeal
 Plug 'KabbAmine/zeavim.vim', {'on': [
@@ -51,6 +52,8 @@ Plug 'KabbAmine/zeavim.vim', {'on': [
 "Plug 'ryanoasis/vim-devicons'
 "
 " " Add plugins to &runtimepath
+"
+Plug 'majutsushi/tagbar'
 call plug#end()
 syntax enable
 colorscheme monokai
@@ -174,3 +177,6 @@ if exists('+colorcolumn')
 else
   au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
 endif
+
+" Tagbar
+nmap <F8> :TagbarToggle<CR>

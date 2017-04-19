@@ -34,5 +34,8 @@ bind j select-pane -D
 bind k select-pane -U
 bind l select-pane -R
 
+run-shell "powerline-daemon -q"
+
+source "/home/redtachyons/.local/lib/python2.7/site-packages/powerline/bindings/tmux/powerline.conf"
 # Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
 run '~/.tmux/plugins/tpm/tpm'
