@@ -9,6 +9,7 @@ set -g @plugin 'tmux-plugins/tmux-yank'
 set -g @plugin 'christoomey/vim-tmux-navigator'
 set -g @plugin 'tmux-plugins/tmux-sensible' # recommened tmux defaults
 set -g @plugin 'tmux-plugins/tmux-yank' # allows copying to system vie tmux
+set -g @plugin 'tmux-plugins/tmux-resurrect'
 
 set -g status-right 'Online: #{online_status}  #{battery_status_bg} Batt: #{battery_icon} #{battery_percentage} #{battery_remain} | %a %h-%d %H:%M '
 set -g @shell_mode 'vi'
@@ -24,6 +25,9 @@ bind-key C-a send-prefix
 # use 256 term for pretty colors
 set -g default-terminal "screen-256color"
 
+# mouse support
+set -g mouse on
+
 # increase scroll-back history
 set -g history-limit 5000
 # Do not rename windows
@@ -33,6 +37,7 @@ bind h select-pane -L
 bind j select-pane -D
 bind k select-pane -U
 bind l select-pane -R
+
 
 run-shell "powerline-daemon -q"
 

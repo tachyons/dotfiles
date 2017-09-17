@@ -1,23 +1,25 @@
 call plug#begin('~/.vim/plugged')
 
 Plug 'scrooloose/nerdtree'
-Plug 'fatih/vim-go', { 'tag': '*' }
+" Plug 'fatih/vim-go', { 'tag': '*' }
 Plug 'sickill/vim-monokai'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tpope/vim-rails'
-Plug 'vim-scripts/vcscommand.vim'
-Plug 'scrooloose/syntastic'
+" Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-dispatch'
+" Plug 'vim-scripts/vcscommand.vim'
+" Plug 'scrooloose/syntastic'
 Plug 'ervandew/supertab'
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
-Plug 'majutsushi/tagbar'
+" Plug 'majutsushi/tagbar'
 Plug 'tpope/vim-surround'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'vim-ctrlspace/vim-ctrlspace'
+" Plug 'vim-ctrlspace/vim-ctrlspace'
 Plug 'elixir-lang/vim-elixir'
 Plug 'slashmili/alchemist.vim'
 Plug 'janko-m/vim-test'
-Plug 'ngmy/vim-rubocop'
+" Plug 'ngmy/vim-rubocop'
 Plug 'noprompt/vim-yardoc'
 Plug 'vim-ruby/vim-ruby'
 Plug 'leafgarland/typescript-vim'
@@ -27,7 +29,7 @@ Plug 'tomtom/tlib_vim'
 Plug 'garbas/vim-snipmate'
 Plug 'tomtom/tcomment_vim'
 Plug 'mileszs/ack.vim'
-Plug 'suan/vim-instant-markdown'
+" Plug 'suan/vim-instant-markdown'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'tpope/vim-fugitive'
 Plug 'vim-scripts/dbext.vim'
@@ -53,7 +55,19 @@ Plug 'KabbAmine/zeavim.vim', {'on': [
 "
 " " Add plugins to &runtimepath
 "
-Plug 'majutsushi/tagbar'
+" Plug 'majutsushi/tagbar'
+
+Plug 'sbdchd/neoformat'
+" Plug 'w0rp/ale'
+" Plug 'ecomba/vim-ruby-refactoring'
+
+" easily search for, substitute, and abbreviate multiple variants of a word 
+Plug 'tpope/tpope-vim-abolish'
+
+"Vim + Tmux"
+Plug 'benmills/vimux'
+
+
 call plug#end()
 syntax enable
 colorscheme monokai
@@ -180,3 +194,21 @@ endif
 
 " Tagbar
 nmap <F8> :TagbarToggle<CR>
+
+" Rails vim
+let g:rails_projections = {
+      \ "app/services/*.rb": {
+      \   "command": "service",
+      \   "template": "class {camelcase|capitalize|colons}\nend",
+      \   "test": [
+      \     "spec/services/{}_spec.rb"
+      \   ]
+      \ }
+      \}
+
+let g:ale_fixers = {
+\   'javascript': ['eslint'],
+\   'ruby': ['rubocop']
+\}
+
+let g:airline#extensions#ale#enabled = 1
