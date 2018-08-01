@@ -26,7 +26,7 @@ bind-key C-a send-prefix
 set -g default-terminal "screen-256color"
 
 # mouse support
-set -g mouse on
+# set -g mouse on
 
 # increase scroll-back history
 set -g history-limit 5000
@@ -41,6 +41,6 @@ bind l select-pane -R
 
 run-shell "powerline-daemon -q"
 
-source "/home/redtachyons/.local/lib/python2.7/site-packages/powerline/bindings/tmux/powerline.conf"
+source "/home/tachyons/.local/lib/python2.7/site-packages/powerline/bindings/tmux/powerline.conf"
 # Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
 run '~/.tmux/plugins/tpm/tpm'

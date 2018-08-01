@@ -10,7 +10,7 @@ Plug 'tpope/vim-dispatch'
 " Plug 'vim-scripts/vcscommand.vim'
 " Plug 'scrooloose/syntastic'
 Plug 'ervandew/supertab'
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
+" Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
 " Plug 'majutsushi/tagbar'
 Plug 'tpope/vim-surround'
 Plug 'vim-airline/vim-airline'
@@ -58,7 +58,7 @@ Plug 'KabbAmine/zeavim.vim', {'on': [
 " Plug 'majutsushi/tagbar'
 
 Plug 'sbdchd/neoformat'
-" Plug 'w0rp/ale'
+Plug 'w0rp/ale'
 " Plug 'ecomba/vim-ruby-refactoring'
 
 " easily search for, substitute, and abbreviate multiple variants of a word 
@@ -66,6 +66,15 @@ Plug 'tpope/tpope-vim-abolish'
 
 "Vim + Tmux"
 Plug 'benmills/vimux'
+
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
+let g:deoplete#enable_at_startup = 1
 
 
 call plug#end()
@@ -211,4 +220,25 @@ let g:ale_fixers = {
 \   'ruby': ['rubocop']
 \}
 
+
+let g:ale_linters = {'ruby': ['rubocop'] }
+
+
 let g:airline#extensions#ale#enabled = 1
+
+" let g:ale_linters_explicit = 1
+
+" ===== Seeing Is Believing =====
+" Assumes you have a Ruby with SiB available in the PATH
+" If it doesn't work, you may need to `gem install seeing_is_believing`
+
+" Annotate every line
+  nmap <leader>s :%!seeing_is_believing --timeout 12 --line-length 500 --number-of-captures 300 --alignment-strategy chunk<CR>;
+" Annotate marked lines
+  nmap <leader>n :%.!seeing_is_believing --timeout 12 --line-length 500 --number-of-captures 300 --alignment-strategy chunk --xmpfilter-style<CR>;
+" Remove annotations
+  nmap <leader>c :%.!seeing_is_believing --clean<CR>;
+" Mark the current line for annotation
+  nmap <leader>m A # => <Esc>
+" Mark the highlighted lines for annotation
+  vmap <leader>m :norm A # => <Esc>
