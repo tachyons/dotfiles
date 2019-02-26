@@ -2,7 +2,7 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'scrooloose/nerdtree'
 " Plug 'fatih/vim-go', { 'tag': '*' }
-Plug 'sickill/vim-monokai'
+Plug 'morhetz/gruvbox'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tpope/vim-rails'
 " Plug 'tpope/vim-endwise'
@@ -26,7 +26,7 @@ Plug 'leafgarland/typescript-vim'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'tomtom/tlib_vim'
-Plug 'garbas/vim-snipmate'
+" Plug 'garbas/vim-snipmate'
 Plug 'tomtom/tcomment_vim'
 Plug 'mileszs/ack.vim'
 " Plug 'suan/vim-instant-markdown'
@@ -37,7 +37,8 @@ Plug 'vim-scripts/dbext.vim'
 Plug 'SirVer/ultisnips'
 
 " Snippets are separated from the engine. Add this if you want them:
-Plug 'honza/vim-snippets'
+" Plug 'honza/vim-snippets'
+Plug '~/code/vim-snippets'
 Plug 'thoughtbot/vim-rspec'
 Plug 'nathanaelkane/vim-indent-guides'
 
@@ -67,19 +68,32 @@ Plug 'tpope/tpope-vim-abolish'
 "Vim + Tmux"
 Plug 'benmills/vimux'
 
+Plug 'junegunn/goyo.vim'
+Plug 'amix/vim-zenroom2'
+
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 else
-  Plug 'Shougo/deoplete.nvim'
+  " Plug 'Shougo/deoplete.nvim'
   Plug 'roxma/nvim-yarp'
   Plug 'roxma/vim-hug-neovim-rpc'
 endif
+
+Plug 'kchmck/vim-coffee-script'
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-rhubarb'
+
+Plug 'ternjs/tern_for_vim'
+autocmd BufNewFile,BufRead *.skim setfiletype slim
+Plug 'slim-template/vim-slim'
+Plug 'Xuyuanp/nerdtree-git-plugin'
 let g:deoplete#enable_at_startup = 1
 
 
 call plug#end()
 syntax enable
-colorscheme monokai
+colorscheme gruvbox
+set background=dark 
 set shiftwidth=2
 set ts=2
 set expandtab
@@ -134,6 +148,14 @@ if filereadable($HOME . "/.vimrc.local")
  source ~/.vimrc.local
 endif
 
+""""""""""""""""""""""""""""""
+" => Visual mode related
+""""""""""""""""""""""""""""""
+" Visual mode pressing * or # searches for the current selection
+" Super useful! From an idea by Michael Naumann
+vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
+vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
+
 " Indentation
 filetype indent on
 set filetype=html          
@@ -153,6 +175,9 @@ if version >= 700
   au InsertEnter * hi StatusLine ctermfg=235 ctermbg=2
   au InsertLeave * hi StatusLine ctermbg=240 ctermfg=12
 endif
+
+" Set leader key as ,
+let mapleader = ","
 
 set list listchars=tab:»·,trail:· " show extra space characters
 " map git commands
@@ -183,6 +208,7 @@ map <Leader>s :call RunNearestSpec()<CR>
 map <Leader>l :call RunLastSpec()<CR>
 map <Leader>a :call RunAllSpecs()<CR>
 nnoremap <leader>b :CtrlPBuffer<cr>
+nnoremap <silent> <leader>z :Goyo<cr>
 
 " Syntatic
 set statusline+=%#warningmsg#
@@ -242,3 +268,45 @@ let g:airline#extensions#ale#enabled = 1
   nmap <leader>m A # => <Esc>
 " Mark the highlighted lines for annotation
   vmap <leader>m :norm A # => <Esc>
+
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+nnoremap <silent> <Leader>nv :NERDTreeFind<CR>
+map <leader>nn :NERDTreeToggle<cr>
+map <leader>nf :NERDTreeFind<cr>
+imap <S-CR>    <CR><CR>end<Esc>-cc
+
+set foldmethod=syntax
+set foldnestmax=10
+set nofoldenable
+set foldlevel=2
+
+" Return to last edit position when opening files (You want this!)
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
+""""""""""""""""""""""""""""""
+" => Shell section
+""""""""""""""""""""""""""""""
+if exists('$TMUX') 
+    if has('nvim')
+        set termguicolors
+    else
+        set term=screen-256color 
+    endif
+endif
+
+function! VisualSelection(direction, extra_filter) range
+    let l:saved_reg = @"
+    execute "normal! vgvy"
+
+    let l:pattern = escape(@", "\\/.*'$^~[]")
+    let l:pattern = substitute(l:pattern, "\n$", "", "")
+
+    if a:direction == 'gv'
+        call CmdLine("Ack '" . l:pattern . "' " )
+    elseif a:direction == 'replace'
+        call CmdLine("%s" . '/'. l:pattern . '/')
+    endif
+
+    let @/ = l:pattern
+    let @" = l:saved_reg
+endfunction
