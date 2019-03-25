@@ -89,6 +89,8 @@ Plug 'slim-template/vim-slim'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 let g:deoplete#enable_at_startup = 1
 
+Plug 'aliou/sql-heredoc.vim'
+
 
 call plug#end()
 syntax enable
