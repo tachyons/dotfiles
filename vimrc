@@ -328,7 +328,4 @@ endfunction
 
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,node_modules/*,vendor/*,tmp/*,public/assets/*     " MacOSX/Linux
 
-" DB g:luxola_dev = postgres://postgres@localhost/luxola_dev
-" DB g:luxola_dump = postgres://postgres@localhost/luxola_dump
-"
 runtime macros/matchit.vim
