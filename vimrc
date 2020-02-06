@@ -2,26 +2,23 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'scrooloose/nerdtree'
 " Plug 'fatih/vim-go', { 'tag': '*' }
-Plug 'morhetz/gruvbox'
-Plug 'ctrlpvim/ctrlp.vim'
+Plug 'morhetz/gruvbox' "Color Theme
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-rails'
-" Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-dispatch'
-" Plug 'vim-scripts/vcscommand.vim'
-" Plug 'scrooloose/syntastic'
 Plug 'ervandew/supertab'
-" Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
-" Plug 'majutsushi/tagbar'
 Plug 'tpope/vim-surround'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-" Plug 'vim-ctrlspace/vim-ctrlspace'
+" Plug 'vim-airline/vim-airline'
+" Plug 'vim-airline/vim-airline-themes'
 Plug 'elixir-lang/vim-elixir'
-Plug 'slashmili/alchemist.vim'
+Plug 'slashmili/alchemist.vim' " Elixir integration
 Plug 'janko-m/vim-test'
-" Plug 'ngmy/vim-rubocop'
 Plug 'noprompt/vim-yardoc'
 Plug 'vim-ruby/vim-ruby'
+Plug 'kana/vim-textobj-user'
+Plug 'nelstrom/vim-textobj-rubyblock'
 Plug 'leafgarland/typescript-vim'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'MarcWeber/vim-addon-mw-utils'
@@ -29,16 +26,13 @@ Plug 'tomtom/tlib_vim'
 " Plug 'garbas/vim-snipmate'
 Plug 'tomtom/tcomment_vim'
 Plug 'mileszs/ack.vim'
-" Plug 'suan/vim-instant-markdown'
-Plug 'christoomey/vim-tmux-navigator'
 Plug 'tpope/vim-fugitive'
-Plug 'vim-scripts/dbext.vim'
 " Track the engine.
 Plug 'SirVer/ultisnips'
 
 " Snippets are separated from the engine. Add this if you want them:
-" Plug 'honza/vim-snippets'
-Plug '~/code/vim-snippets'
+Plug 'honza/vim-snippets'
+" Plug '~/code/vim-snippets'
 Plug 'thoughtbot/vim-rspec'
 Plug 'nathanaelkane/vim-indent-guides'
 
@@ -90,6 +84,17 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 let g:deoplete#enable_at_startup = 1
 
 Plug 'aliou/sql-heredoc.vim'
+Plug 'posva/vim-vue'
+Plug 'digitaltoad/vim-pug'
+Plug 'neoclide/coc.nvim', {'tag': '*', 'branch': 'release'}
+Plug 'osyo-manga/vim-over'
+Plug 'rhysd/git-messenger.vim'
+Plug 'AndrewRadev/splitjoin.vim'
+Plug 'kkoomen/vim-doge'
+Plug 'Raimondi/delimitMate'
+Plug 'tpope/vim-dadbod'
+Plug 'rrethy/vim-hexokinase', { 'do': 'make hexokinase' }
+" Plug 'ryanoasis/vim-devicons'
 
 
 call plug#end()
@@ -99,11 +104,14 @@ set background=dark
 set shiftwidth=2
 set ts=2
 set expandtab
-let g:airline#extensions#tabline#enabled = 1
+" let g:airline#extensions#tabline#enabled = 1
 set encoding=utf8
 set guifont=Droid\ Sans\ Mono\ for\ Powerline\ Plus\ Nerd\ File\ Types\ 11
 set nocompatible
 set hidden
+set cmdheight=2
+" You will have bad experience for diagnostic messages when it's default 4000.
+set updatetime=300
 
 " Make Vim more useful
 set nocompatible
@@ -205,22 +213,26 @@ let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 let g:UltiSnipsEditSplit="vertical"
 
 " RSpec.vim mappings
-map <Leader>t :call RunCurrentSpecFile()<CR>
 map <Leader>s :call RunNearestSpec()<CR>
 map <Leader>l :call RunLastSpec()<CR>
 map <Leader>a :call RunAllSpecs()<CR>
-nnoremap <leader>b :CtrlPBuffer<cr>
+
+nnoremap <leader>b :History<cr>
+nnoremap <leader>p :GFiles<cr>
 nnoremap <silent> <leader>z :Goyo<cr>
+nnoremap <C-p> :GFiles<Cr>
+nnoremap <leader>db :DB 
+nnoremap <leader>st :DB show tables<cr>
 
 " Syntatic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 1
+" set statusline+=%#warningmsg#
+" set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%*
+"
+" let g:syntastic_always_populate_loc_list = 1
+" let g:syntastic_auto_loc_list = 1
+" let g:syntastic_check_on_open = 1
+" let g:syntastic_check_on_wq = 1
 
 " 100 chars per line
 if exists('+colorcolumn')
@@ -248,11 +260,11 @@ let g:ale_fixers = {
 \   'ruby': ['rubocop']
 \}
 
+"
+" let g:ale_linters = {'ruby': ['rubocop'] }
 
-let g:ale_linters = {'ruby': ['rubocop'] }
 
-
-let g:airline#extensions#ale#enabled = 1
+" let g:airline#extensions#ale#enabled = 1
 
 " let g:ale_linters_explicit = 1
 
@@ -275,6 +287,7 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 nnoremap <silent> <Leader>nv :NERDTreeFind<CR>
 map <leader>nn :NERDTreeToggle<cr>
 map <leader>nf :NERDTreeFind<cr>
+map <leader>t :TestFile<cr>
 imap <S-CR>    <CR><CR>end<Esc>-cc
 
 set foldmethod=syntax
@@ -312,3 +325,10 @@ function! VisualSelection(direction, extra_filter) range
     let @/ = l:pattern
     let @" = l:saved_reg
 endfunction
+
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,node_modules/*,vendor/*,tmp/*,public/assets/*     " MacOSX/Linux
+
+" DB g:luxola_dev = postgres://postgres@localhost/luxola_dev
+" DB g:luxola_dump = postgres://postgres@localhost/luxola_dump
+"
+runtime macros/matchit.vim
