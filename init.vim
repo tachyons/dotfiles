@@ -11,29 +11,62 @@ Plug 'tpope/vim-sensible'
 Plug 'dense-analysis/ale'
 Plug 'airblade/vim-gitgutter'
 Plug 'rhysd/git-messenger.vim'
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-	Plug 'deoplete-plugins/deoplete-lsp'
-  Plug 'Shougo/neosnippet.vim'
-  Plug 'Shougo/neosnippet-snippets'
-else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
+Plug 'williamboman/nvim-lsp-installer'
+Plug 'neovim/nvim-lspconfig'
+Plug 'glepnir/lspsaga.nvim', { 'branch': 'main' }
+" Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
+Plug 'tachyons/coq_nvim', {'branch': 'bugfix/fix_nerdtree_compatiability'}
+Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'morhetz/gruvbox'
 Plug 'kchmck/vim-coffee-script'
-Plug 'neovim/nvim-lspconfig'
 Plug 'preservim/tagbar'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'akinsho/toggleterm.nvim'
+Plug 'vim-test/vim-test'
+Plug 'aliou/sql-heredoc.vim'
+Plug 'github/copilot.vim'
+Plug 'elixir-editors/vim-elixir'
+Plug 'mhanberg/elixir.nvim'
+Plug 'noprompt/vim-yardoc'
+Plug 'mattn/emmet-vim'
+Plug 'psliwka/vim-dirtytalk', { 'do': ':DirtytalkUpdate' }
+
+
 "
 " Initialize plugin system
 call plug#end()
 
+set completeopt=menu,menuone,noselect
 
-let g:deoplete#enable_at_startup = 1
+lua <<EOF
+
+  local lsp = require "lspconfig"
+  local coq = require "coq"
+
+	lsp.solargraph.setup { capabilities = capabilities }
+	lsp.sorbet.setup{}
+	lsp.tailwindcss.setup{}
+  -- lsp.typeprof.setup{}
+	lsp.denols.setup {
+  	on_attach = on_attach,
+	  root_dir = lsp.util.root_pattern("deno.json", "deno.jsonc"),
+  }
+
+  lsp.tsserver.setup {
+	  on_attach = on_attach,
+	  root_dir = lsp.util.root_pattern("package.json"),
+  }
+
+	lsp.solargraph.setup(coq.lsp_ensure_capabilities())
+	vim.cmd('COQnow -s')
+	require("nvim-lsp-installer").setup {}
+EOF
+
 
 " Rails vim
 let g:rails_projections = {
@@ -59,7 +92,7 @@ let g:ale_fixers = {
  " Set leader key as ,
 let mapleader = ","
 
-set list listchars=tab:¬ª¬∑,trail:¬∑ " show extra space characters
+" set listchars=
 
 " Enable line numbers
 set number
@@ -95,10 +128,6 @@ map <leader>gd :!clear && git diff %<cr>
 map <leader>b :History<cr>
 map <leader>p :GFiles<cr>
 
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
-
 
 " Required for operations modifying multiple buffers like rename.
 set hidden
@@ -110,9 +139,18 @@ nmap <silent>K <Plug>(lcn-hover)
 nmap <silent> gd <Plug>(lcn-definition)
 nmap <silent> <F2> <Plug>(lcn-rename)
 
-lua << EOF
-require'lspconfig'.solargraph.setup{}
-EOF
+nmap <silent> <leader>t :TestNearest<CR>
+nmap <silent> <leader>T :TestFile<CR>
+nmap <silent> <leader>a :TestSuite<CR>
+nmap <silent> <leader>l :TestLast<CR>
+nmap <silent> <leader>g :TestVisit<CR>
+
+au BufRead,BufNewFile *.ex,*.exs set filetype=elixir
+au BufRead,BufNewFile *.eex,*.heex,*.leex,*.sface,*.lexs set filetype=eelixir
+au BufRead,BufNewFile mix.lock set filetype=elixir
+
+set spelllang=en,programming
 
 syntax enable
+set termguicolors
 colorscheme gruvbox
